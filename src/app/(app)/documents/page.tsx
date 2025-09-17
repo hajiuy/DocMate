@@ -1,0 +1,69 @@
+import { PlusCircle, Upload } from 'lucide-react';
+import Link from 'next/link';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { mockDocuments } from '@/lib/mock-data';
+
+export default function DocumentsPage() {
+  return (
+    <div className="flex flex-col gap-4 md:gap-8">
+      <div className="flex items-center">
+        <h1 className="font-semibold text-lg md:text-2xl">Documents</h1>
+        <Button className="ml-auto gap-1">
+          <PlusCircle className="h-4 w-4" />
+          Upload Document
+        </Button>
+      </div>
+
+      <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+        <div className="flex flex-col items-center gap-1 py-12 text-center">
+          <Upload className="h-10 w-10 text-muted-foreground" />
+          <h3 className="text-2xl font-bold tracking-tight">
+            You have no new documents
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            You can start processing documents by dragging and dropping them
+            here.
+          </p>
+          <Button className="mt-4">Upload Document</Button>
+        </div>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Uploaded Documents</CardTitle>
+          <CardDescription>
+            Manage your legal and financial documents.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {mockDocuments.map((doc) => (
+            <Card key={doc.id}>
+              <CardHeader>
+                <CardTitle className="truncate text-base">{doc.name}</CardTitle>
+                <CardDescription>Uploaded: {doc.uploadDate}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Badge variant="outline">PDF</Badge>
+              </CardContent>
+              <CardFooter>
+                <Button asChild variant="secondary" className="w-full">
+                  <Link href={`/documents/${doc.id}`}>View Document</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

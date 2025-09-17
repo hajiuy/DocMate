@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "login-background",
+      "description": "Abstract blue and purple geometric shapes for login background",
+      "imageUrl": "https://picsum.photos/seed/legalsage/1920/1080",
+      "imageHint": "abstract legal"
+    }
+  ]
 }
