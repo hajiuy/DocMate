@@ -3,7 +3,7 @@ import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'LegalSage',
+  title: 'DocMate',
   description: 'Your Personal Legal + Financial Companion',
 };
 

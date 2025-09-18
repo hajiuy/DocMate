@@ -22,7 +22,12 @@ import {
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  {
+    href: '/dashboard',
+    icon: LayoutDashboard,
+    label: 'Dashboard',
+    color: '#004F98',
+  },
   { href: '/documents', icon: FileText, label: 'Documents' },
   { href: '/notebook', icon: BookMarked, label: 'Notebook' },
   { href: '/compare', icon: GitCompareArrows, label: 'Compare' },
@@ -41,7 +46,7 @@ export default function Sidebar() {
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <ShieldCheck className="h-4 w-4 transition-all group-hover:scale-110" />
-          <span className="sr-only">LegalSage</span>
+          <span className="sr-only">DocMate</span>
         </Link>
         <TooltipProvider>
           {navItems.map((item) => (
@@ -54,6 +59,11 @@ export default function Sidebar() {
                     pathname.startsWith(item.href) &&
                       'bg-accent text-accent-foreground'
                   )}
+                  style={
+                    pathname.startsWith(item.href) && item.color
+                      ? { backgroundColor: item.color, color: 'white' }
+                      : {}
+                  }
                 >
                   <item.icon className="h-5 w-5" />
                   <span className="sr-only">{item.label}</span>

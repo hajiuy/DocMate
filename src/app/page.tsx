@@ -30,7 +30,7 @@ export default function LoginPage() {
               <ShieldCheck className="h-12 w-12 text-primary" />
             </div>
             <CardTitle className="text-3xl font-bold font-headline">
-              LegalSage
+              DocMate
             </CardTitle>
             <CardDescription>
               Your Personal Legal + Financial Companion

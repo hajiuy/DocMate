@@ -27,12 +27,14 @@ export default function NotebookPage() {
   return (
     <div className="flex flex-col gap-4 md:gap-8">
       <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl">Notebook</h1>
+        <h1 className="font-semibold text-lg md:text-2xl">ClauseBook</h1>
         <Button className="ml-auto gap-1">
           <PlusCircle className="h-4 w-4" />
           Add Entry
         </Button>
       </div>
+
+      <p className="text-muted-foreground"> </p>
 
       <Tabs defaultValue="emis" className="grid gap-4">
         <TabsList>
