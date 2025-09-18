@@ -25,7 +25,7 @@ export function ChatInterface() {
     {
       id: '1',
       role: 'assistant',
-      content: "Hello! I'm DocMate. Ask me anything about your documents.",
+      content: "Hello! I'm ClauseBot. Ask me anything about your documents.",
     },
   ]);
   const [input, setInput] = useState('');
@@ -99,7 +99,7 @@ export function ChatInterface() {
       <CardHeader>
         <div className="flex items-center gap-2">
           <Sparkles className="h-6 w-6 text-primary" />
-          <h2 className="text-xl font-semibold">Ask DocMate Anything</h2>
+          <h2 className="text-xl font-semibold">Ask ClauseBot Anything</h2>
         </div>
         <CardDescription>
           Ask me anything about your documents and finances!
