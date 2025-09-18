@@ -22,7 +22,7 @@ const CompareDocumentsOutputSchema = z.object({
   comparisonReport: z
     .string()
     .describe(
-      'A detailed comparison report highlighting which document is better and why, along with their respective clauses.'
+      'A concise comparison report highlighting which document is better and why, with a brief summary of their clauses.'
     ),
 });
 
@@ -42,11 +42,11 @@ const compareDocumentsPrompt = ai.definePrompt({
   output: { schema: CompareDocumentsOutputSchema },
   prompt: `You are an expert AI assistant specializing in legal and financial document analysis. You will be given two documents to compare.
 
-Your task is to:
-1.  Analyze both documents and identify their key terms, conditions, and clauses.
-2.  Determine which document is "better" or more favorable, and provide a clear, reasoned explanation for your conclusion. Consider aspects like cost, liabilities, benefits, and risks.
-3.  Provide a summary of the clauses for each document.
-4.  Structure your response in a clear, easy-to-read format. Use headings and bullet points.
+Your task is to provide a short and to-the-point comparison.
+1.  Briefly analyze both documents.
+2.  Determine which document is "better" or more favorable, and provide a concise explanation.
+3.  Provide a very brief summary of the key clauses for each document.
+4.  Keep the entire report concise and easy to read.
 
 This is not legal advice. Start your response with a disclaimer stating that.
 
