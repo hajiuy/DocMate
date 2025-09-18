@@ -25,6 +25,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { mockDocuments } from '@/lib/mock-data';
 import { generateReport } from '@/ai/flows/generate-report';
 import { generateAudioReport } from '@/ai/flows/generate-audio-report';
+import type { Document } from '@/lib/definitions';
 
 export default function DocumentsPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -33,6 +34,7 @@ export default function DocumentsPage() {
   const [report, setReport] = useState<string | null>(null);
   const [audioDataUri, setAudioDataUri] = useState<string | null>(null);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  const [uploadedDocuments, setUploadedDocuments] = useState<Document[]>(mockDocuments);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -51,13 +53,35 @@ export default function DocumentsPage() {
     }
   }
 
+  const handleProcessDocument = () => {
+    if (!selectedFile) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const content = e.target?.result as string;
+        const newDocument: Document = {
+            id: `doc-${Date.now()}`,
+            name: selectedFile.name,
+            uploadDate: new Date().toLocaleDateString(),
+            content: content,
+            clauses: content.split('\n').filter(line => line.trim().startsWith('Clause')).map((line, index) => ({
+                id: `c-${Date.now()}-${index}`,
+                text: line.trim()
+            })),
+        };
+        setUploadedDocuments(prev => [newDocument, ...prev]);
+        handleRemoveFile();
+    };
+    reader.readAsText(selectedFile);
+  }
+
   const handleGenerateReport = () => {
     startTransition(async () => {
       setReport(null);
       setAudioDataUri(null);
       setIsReportDialogOpen(true);
 
-      const documentContents = mockDocuments.map((doc) => doc.content);
+      const documentContents = uploadedDocuments.map((doc) => doc.content);
       try {
         const result = await generateReport({ documentContents });
         setReport(result.report);
@@ -73,7 +97,7 @@ export default function DocumentsPage() {
       setAudioDataUri(null);
       setIsReportDialogOpen(true);
       
-      const documentContents = mockDocuments.map((doc) => doc.content);
+      const documentContents = uploadedDocuments.map((doc) => doc.content);
       try {
         const reportResult = await generateReport({ documentContents });
         setReport(reportResult.report);
@@ -113,7 +137,7 @@ export default function DocumentsPage() {
                 ({(selectedFile.size / 1024).toFixed(2)} KB)
               </p>
               <div className="mt-4 flex gap-2">
-                <Button>Process Document</Button>
+                <Button onClick={handleProcessDocument}>Process Document</Button>
                 <Button variant="ghost" onClick={handleRemoveFile}>
                   <X className="mr-2 h-4 w-4" />
                   Remove
@@ -154,11 +178,11 @@ export default function DocumentsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4 sm:flex-row">
-            <Button onClick={handleGenerateReport} disabled={isPending}>
+            <Button onClick={handleGenerateReport} disabled={isPending || uploadedDocuments.length === 0}>
               {isPending && !audioDataUri ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileText className="mr-2 h-4 w-4" />}
               Generate Report
             </Button>
-            <Button onClick={handleGenerateAudioReport} disabled={isPending}>
+            <Button onClick={handleGenerateAudioReport} disabled={isPending || uploadedDocuments.length === 0}>
               {isPending && audioDataUri === null ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileAudio className="mr-2 h-4 w-4" />}
               Generate Audio Report
             </Button>
@@ -173,14 +197,14 @@ export default function DocumentsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {mockDocuments.map((doc) => (
+            {uploadedDocuments.map((doc) => (
               <Card key={doc.id}>
                 <CardHeader>
                   <CardTitle className="truncate text-base">{doc.name}</CardTitle>
                   <CardDescription>Uploaded: {doc.uploadDate}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Badge variant="outline">PDF</Badge>
+                  <Badge variant="outline">TEXT</Badge>
                 </CardContent>
                 <CardFooter>
                   <Button asChild variant="secondary" className="w-full">
