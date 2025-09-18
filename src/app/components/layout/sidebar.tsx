@@ -22,7 +22,12 @@ import {
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  {
+    href: '/dashboard',
+    icon: LayoutDashboard,
+    label: 'Dashboard',
+    color: '#004F98',
+  },
   { href: '/documents', icon: FileText, label: 'Documents' },
   { href: '/notebook', icon: BookMarked, label: 'Notebook' },
   { href: '/compare', icon: GitCompareArrows, label: 'Compare' },
@@ -54,6 +59,11 @@ export default function Sidebar() {
                     pathname.startsWith(item.href) &&
                       'bg-accent text-accent-foreground'
                   )}
+                  style={
+                    item.href === '/dashboard' && pathname.startsWith(item.href)
+                      ? { backgroundColor: item.color }
+                      : {}
+                  }
                 >
                   <item.icon className="h-5 w-5" />
                   <span className="sr-only">{item.label}</span>
