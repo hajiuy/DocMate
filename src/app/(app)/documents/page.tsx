@@ -1,4 +1,4 @@
-import { PlusCircle, Upload } from 'lucide-react';
+import { PlusCircle, Upload, FileText } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +15,7 @@ import { mockDocuments } from '@/lib/mock-data';
 
 export default function DocumentsPage() {
   return (
-    <div className="flex flex-col gap-4 md:gap-8">
+    <div className="flex flex-col gap-8">
       <div className="flex items-center">
         <h1 className="font-semibold text-lg md:text-2xl">Documents</h1>
         <Button className="ml-auto gap-1">
@@ -37,6 +37,21 @@ export default function DocumentsPage() {
           <Button className="mt-4">Upload Document</Button>
         </div>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Get Report</CardTitle>
+          <CardDescription>
+            Generate a comprehensive report summarizing all your documents.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button>
+            <FileText className="mr-2 h-4 w-4" />
+            Generate Report
+          </Button>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

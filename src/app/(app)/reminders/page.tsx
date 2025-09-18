@@ -13,19 +13,21 @@ import { mockReminders } from '@/lib/mock-data';
 
 export default function RemindersPage() {
   return (
-    <div className="flex flex-col gap-4 md:gap-8">
-      <div className="flex items-center">
+    <div className="flex flex-col gap-4">
+      <div>
         <h1 className="font-semibold text-lg md:text-2xl">DueBook</h1>
+        <p className="text-sm text-muted-foreground">
+          Never miss a payment or renewal again with timely reminders and
+          alerts.
+        </p>
       </div>
 
-      <p className="text-muted-foreground">
-        Never miss a payment or renewal again with timely reminders and alerts.
-      </p>
-
-      <Card>
+      <Card className="mt-4">
         <CardHeader>
           <CardTitle>Upcoming Deadlines</CardTitle>
-          <CardDescription>Stay on top of your important dates.</CardDescription>
+          <CardDescription>
+            Stay on top of your important dates.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {mockReminders.map((reminder) => (

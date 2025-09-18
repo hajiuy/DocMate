@@ -25,21 +25,22 @@ export default function NotebookPage() {
   const purchases = mockLiabilities.filter((l) => l.type === 'Purchase');
 
   return (
-    <div className="flex flex-col gap-4 md:gap-8">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl">ClauseBook</h1>
+        <div>
+          <h1 className="font-semibold text-lg md:text-2xl">ClauseBook</h1>
+          <p className="text-sm text-muted-foreground">
+            Your smart notebook that keeps every clause, EMI, and warranty in
+            one place.
+          </p>
+        </div>
         <Button className="ml-auto gap-1">
           <PlusCircle className="h-4 w-4" />
           Add Entry
         </Button>
       </div>
 
-      <p className="text-muted-foreground">
-        Your smart notebook that keeps every clause, EMI, and warranty in one
-        place.
-      </p>
-
-      <Tabs defaultValue="emis" className="grid gap-4">
+      <Tabs defaultValue="emis" className="grid gap-4 pt-4">
         <TabsList>
           <TabsTrigger value="emis">EMIs</TabsTrigger>
           <TabsTrigger value="warranties">Warranties</TabsTrigger>
