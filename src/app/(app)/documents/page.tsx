@@ -22,6 +22,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { mockDocuments } from '@/lib/mock-data';
 import { generateReport } from '@/ai/flows/generate-report';
 import { generateAudioReport } from '@/ai/flows/generate-audio-report';
@@ -35,6 +36,7 @@ export default function DocumentsPage() {
   const [audioDataUri, setAudioDataUri] = useState<string | null>(null);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [uploadedDocuments, setUploadedDocuments] = useState<Document[]>(mockDocuments);
+  const [selectedReportDocId, setSelectedReportDocId] = useState<string | undefined>(undefined);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -70,18 +72,32 @@ export default function DocumentsPage() {
             })),
         };
         setUploadedDocuments(prev => [newDocument, ...prev]);
+        if (!selectedReportDocId) {
+          setSelectedReportDocId(newDocument.id);
+        }
         handleRemoveFile();
     };
     reader.readAsText(selectedFile);
   }
 
+  const getSelectedDocumentContent = (): string[] => {
+    if (!selectedReportDocId) return [];
+    const selectedDoc = uploadedDocuments.find(doc => doc.id === selectedReportDocId);
+    return selectedDoc ? [selectedDoc.content] : [];
+  };
+
   const handleGenerateReport = () => {
     startTransition(async () => {
+      const documentContents = getSelectedDocumentContent();
+      if (documentContents.length === 0) {
+        setReport("Please select a document to generate a report.");
+        return;
+      }
+
       setReport(null);
       setAudioDataUri(null);
       setIsReportDialogOpen(true);
 
-      const documentContents = uploadedDocuments.map((doc) => doc.content);
       try {
         const result = await generateReport({ documentContents });
         setReport(result.report);
@@ -93,11 +109,16 @@ export default function DocumentsPage() {
 
   const handleGenerateAudioReport = () => {
     startTransition(async () => {
+      const documentContents = getSelectedDocumentContent();
+      if (documentContents.length === 0) {
+        setReport("Please select a document to generate a report.");
+        return;
+      }
+      
       setReport(null);
       setAudioDataUri(null);
       setIsReportDialogOpen(true);
       
-      const documentContents = uploadedDocuments.map((doc) => doc.content);
       try {
         const reportResult = await generateReport({ documentContents });
         setReport(reportResult.report);
@@ -174,18 +195,32 @@ export default function DocumentsPage() {
           <CardHeader>
             <CardTitle>Get Report</CardTitle>
             <CardDescription>
-              Generate a comprehensive report summarizing all your documents.
+              Generate a comprehensive report summarizing a specific document.
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col gap-4 sm:flex-row">
-            <Button onClick={handleGenerateReport} disabled={isPending || uploadedDocuments.length === 0}>
-              {isPending && !audioDataUri ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileText className="mr-2 h-4 w-4" />}
-              Generate Report
-            </Button>
-            <Button onClick={handleGenerateAudioReport} disabled={isPending || uploadedDocuments.length === 0}>
-              {isPending && audioDataUri === null ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileAudio className="mr-2 h-4 w-4" />}
-              Generate Audio Report
-            </Button>
+          <CardContent className="flex flex-col gap-4">
+             <Select onValueChange={setSelectedReportDocId} defaultValue={selectedReportDocId}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a document for the report" />
+              </SelectTrigger>
+              <SelectContent>
+                {uploadedDocuments.map((doc) => (
+                  <SelectItem key={doc.id} value={doc.id}>
+                    {doc.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <div className="flex flex-col gap-4 sm:flex-row">
+                <Button onClick={handleGenerateReport} disabled={isPending || !selectedReportDocId}>
+                {isPending && !audioDataUri ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileText className="mr-2 h-4 w-4" />}
+                Generate Report
+                </Button>
+                <Button onClick={handleGenerateAudioReport} disabled={isPending || !selectedReportDocId}>
+                {isPending && audioDataUri === null ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileAudio className="mr-2 h-4 w-4" />}
+                Generate Audio Report
+                </Button>
+            </div>
           </CardContent>
         </Card>
 
