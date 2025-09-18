@@ -1,4 +1,7 @@
-import { PlusCircle, Upload, FileText, FileAudio } from 'lucide-react';
+'use client';
+
+import { useState, useRef } from 'react';
+import { PlusCircle, Upload, FileText, FileAudio, File as FileIcon, X } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
@@ -14,28 +17,83 @@ import {
 import { mockDocuments } from '@/lib/mock-data';
 
 export default function DocumentsPage() {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
+  const handleFileSelect = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    if(fileInputRef.current) {
+        fileInputRef.current.value = '';
+    }
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center">
         <h1 className="font-semibold text-lg md:text-2xl">Documents</h1>
-        <Button className="ml-auto gap-1">
+        <Button className="ml-auto gap-1" onClick={handleFileSelect}>
           <PlusCircle className="h-4 w-4" />
           Upload Document
         </Button>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+          accept=".pdf,.doc,.docx,text/plain"
+        />
       </div>
 
       <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-        <div className="flex flex-col items-center gap-1 py-12 text-center">
-          <Upload className="h-10 w-10 text-muted-foreground" />
-          <h3 className="text-2xl font-bold tracking-tight">
-            You have no new documents
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            You can start processing documents by dragging and dropping them
-            here.
-          </p>
-          <Button className="mt-4">Upload Document</Button>
-        </div>
+        {selectedFile ? (
+          <div className="flex flex-col items-center gap-2 py-8 text-center">
+            <FileIcon className="h-10 w-10 text-muted-foreground" />
+            <p className="font-medium">{selectedFile.name}</p>
+            <p className="text-sm text-muted-foreground">
+              ({(selectedFile.size / 1024).toFixed(2)} KB)
+            </p>
+            <div className="mt-4 flex gap-2">
+              <Button>Process Document</Button>
+              <Button variant="ghost" onClick={handleRemoveFile}>
+                <X className="mr-2 h-4 w-4" />
+                Remove
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="flex flex-col items-center gap-1 py-12 text-center"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                setSelectedFile(e.dataTransfer.files[0]);
+              }
+            }}
+          >
+            <Upload className="h-10 w-10 text-muted-foreground" />
+            <h3 className="text-2xl font-bold tracking-tight">
+              You have no new documents
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              You can start processing documents by dragging and dropping them
+              here.
+            </p>
+            <Button className="mt-4" onClick={handleFileSelect}>
+              Upload Document
+            </Button>
+          </div>
+        )}
       </div>
 
       <Card>
