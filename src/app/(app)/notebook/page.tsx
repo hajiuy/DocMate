@@ -34,7 +34,10 @@ export default function NotebookPage() {
         </Button>
       </div>
 
-      <p className="text-muted-foreground"> </p>
+      <p className="text-muted-foreground">
+        Your smart notebook that keeps every clause, EMI, and warranty in one
+        place.
+      </p>
 
       <Tabs defaultValue="emis" className="grid gap-4">
         <TabsList>

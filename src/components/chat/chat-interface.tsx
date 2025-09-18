@@ -11,6 +11,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardDescription,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -100,6 +101,9 @@ export function ChatInterface() {
           <Sparkles className="h-6 w-6 text-primary" />
           <h2 className="text-xl font-semibold">Ask DocMate Anything</h2>
         </div>
+        <CardDescription>
+          Ask me anything about your documents and finances!
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden">
         <ScrollArea className="h-full pr-4">

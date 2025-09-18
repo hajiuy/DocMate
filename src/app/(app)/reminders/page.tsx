@@ -18,6 +18,10 @@ export default function RemindersPage() {
         <h1 className="font-semibold text-lg md:text-2xl">DueBook</h1>
       </div>
 
+      <p className="text-muted-foreground">
+        Never miss a payment or renewal again with timely reminders and alerts.
+      </p>
+
       <Card>
         <CardHeader>
           <CardTitle>Upcoming Deadlines</CardTitle>
