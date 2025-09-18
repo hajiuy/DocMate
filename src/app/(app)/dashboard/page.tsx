@@ -4,6 +4,7 @@ import {
   CreditCard,
   DollarSign,
   ShieldAlert,
+  ShieldCheck,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -23,6 +24,10 @@ import { mockDocuments } from '@/lib/mock-data';
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-4 md:gap-8">
+      <div className="flex items-center gap-2">
+        <ShieldCheck className="h-8 w-8 text-primary" />
+        <h1 className="font-semibold text-2xl md:text-3xl">LegalSage</h1>
+      </div>
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         <SummaryCard
           title="Total Liabilities"
