@@ -1,4 +1,4 @@
-import { PlusCircle, Upload, FileText } from 'lucide-react';
+import { PlusCircle, Upload, FileText, FileAudio } from 'lucide-react';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
@@ -45,10 +45,14 @@ export default function DocumentsPage() {
             Generate a comprehensive report summarizing all your documents.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-4 sm:flex-row">
           <Button>
             <FileText className="mr-2 h-4 w-4" />
             Generate Report
+          </Button>
+          <Button>
+            <FileAudio className="mr-2 h-4 w-4" />
+            Generate Audio Report
           </Button>
         </CardContent>
       </Card>
