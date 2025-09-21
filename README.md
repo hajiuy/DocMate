@@ -1,4 +1,4 @@
-DocMate AI Companion
+DocMate AI COMPANION
 
 Your Personal Legal + Financial Companion
 Simplifies complex legal documents, tracks EMIs & warranties, compares contracts, and answers your questions in plain language, powered by Google Cloud’s AI stack.
@@ -41,8 +41,8 @@ Security & Secrets:
 
 ✅ Usage Flow
 	1.	Upload a document → DocAI extracts clauses, EMIs, warranties.
-	2.	View ClauseBook for structured notebook entries.
+    2.	View ClauseBook for structured notebook entries.
 	3.	DueBook sends reminders before EMIs/warranties expire.
-	4.	Use Ask Me Anything chatbot for queries.
+    4.	Use Ask Me Anything chatbot for queries.
 	5.	Compare two documents → side-by-side summary.
-	6.	Get multilingual explanations and story-style guidance.
+    6.	Get multilingual explanations and story-style guidance.
